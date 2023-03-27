@@ -1,0 +1,26 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2023-03-27T04:27:05Z",
+  "id": "03-apache-spark",
+  "duration": 111,
+  "title": "Apache Spark Untuk Pemula",
+  "authors": "Habibie Ed Dien 2023",
+  "summary": "Berdasarkan materi dari Chapter 3 - Deep Dive into Apache Spark",
+  "source": "1cDuSdk8UkWUkAmsY0yGYw8f1MX8sm4kY_tRl3XLKtfo",
+  "theme": "bigdata",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "bigdata"
+  ],
+  "tags": [
+    "desktop"
+  ],
+  "feedback": "https://github.com/jti-polinema/big-data-codelabs/issues",
+  "ga": "G-H7507PFEJB",
+  "url": "03-apache-spark"
+}

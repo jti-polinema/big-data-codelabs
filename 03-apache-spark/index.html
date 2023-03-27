@@ -1,0 +1,243 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Apache Spark Untuk Pemula</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="G-H7507PFEJB"
+                  id="03-apache-spark"
+                  title="Apache Spark Untuk Pemula"
+                  environment="web"
+                  feedback-link="https://github.com/jti-polinema/big-data-codelabs/issues">
+    
+      <google-codelab-step label="Memulai Spark daemons" duration="0">
+        <p class="image-container"><img style="width: 311.00px" src="img\\909bf8db075bb3db.png"></p>
+<p><strong>Terakhir diperbarui: </strong>27 Maret 2023</p>
+<p><strong>Penulis: </strong>Habibie Ed Dien</p>
+<h2 is-upgraded>Bekerja dengan CDH</h2>
+<p><em>Cloudera Distribution for Hadoop</em> (CDH) adalah sebuah image open source yang sepaket dengan Hadoop, Spark, dan banyak project lain yang dibutuhkan dalam proses analisis Big Data. Diasumsikan Anda telah berhasil setup CDH di VirtualBox atau VM dan telah berhasil upgrade ke Spark v2.0 atau yang lebih baru.</p>
+<h2 is-upgraded><strong>Apa yang Anda akan pelajari</strong></h2>
+<p>Di codelab ini Anda akan mempelajari tentang:</p>
+<ul>
+<li>Praktik menggunakan pyspark</li>
+<li>Praktik menggunakan spark-shell</li>
+</ul>
+<aside class="special"><p><strong>Catatan:</strong> Materi ini diadaptasi dari Buku Big Data Analytics, Packt Publishing (2016) oleh Venkat Ankam serta sumber dokumentasi resmi lainnya.</p>
+</aside>
+<h2 is-upgraded><strong>Apa yang Anda perlu persiapkan</strong></h2>
+<ul>
+<li>PC atau Laptop dengan spesifikasi minimum RAM 8GB Processor Core i3</li>
+<li>Koneksi internet</li>
+<li>CMD, putty, atau terminal</li>
+</ul>
+<h2 is-upgraded><strong>Pengetahuan yang Anda harus dimiliki</strong></h2>
+<ul>
+<li>Diasumsikan Anda telah berhasil setup CDH di VirtualBox, VM, atau docker</li>
+<li>Diasumsikan Anda telah berhasil upgrade ke Spark v2.0 atau yang lebih baru</li>
+<li>Pemrograman dasar Python</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Memulai Spark" duration="10">
+        <p>Untuk memulai spark, silakan akses ke folder spark di mana Anda pernah ekstrak sebelumnya. Misalnya di bawah ini terletak di <code>/home/cloudera</code>, lalu masuk ke folder <code>sbin</code> dan run <code>start-all.sh</code> untuk menjalankan spark daemons. Jika diminta mengisi password, maka isikan <code>cloudera</code>.</p>
+<pre><code>cd /home/cloudera/spark-2.0.0-bin-hadoop2.7/sbin
+sudo ./start-all.sh</code></pre>
+<p>Kemudian jika berhasil running, Anda dapat mengakses di browser CDH atau VM pada alamat <a href="http://quickstart.cloudera:8080/" target="_blank">http://quickstart.cloudera:8080/</a> </p>
+<p>Akan tampil di browser seperti berikut ini.</p>
+<p class="image-container"><img style="width: 624.00px" src="img\\93833172d064ec03.png"></p>
+<aside class="special"><p><strong>Catatan:</strong> Sampai sini Anda telah berhasil running Spark v2.0. Silakan bisa di-screenshot dan dibuat laporan praktikum ke repository GitHub Anda dengan nama repo <strong>spark-big-data</strong>.</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Memulai Spark Shell" duration="11">
+        <h2 is-upgraded>Apa itu Spark Shell<strong>?</strong></h2>
+<p>Bekerja dengan spark dapat dilakukan melalui 2 cara yaitu:</p>
+<ol type="1" start="1">
+<li>Menggunakan <strong>Spark Shell</strong>, yaitu saat proses development atau pengembangan yang banyak dilakukan proses debugging dan kesalahan. Digunakan melalui terminal atau <em>Command Line Interface</em> (CLI).</li>
+<li>Menggunakan <strong>Spark Applications</strong>, yaitu dengan spark submit, setelah proses development mendapatkan kode program yang fix, maka kode dapat disalin berupa file dan dikirim ke spark engine untuk diproses.</li>
+</ol>
+<p>Silakan running di terminal spark shell seperti berikut ini.</p>
+<pre><code>spark-shell</code></pre>
+<p>Maka akan tampil seperti ini.</p>
+<p class="image-container"><img style="width: 624.00px" src="img\\71d6ea1a2ab3183d.png"></p>
+<aside class="special"><p><strong>Catatan:</strong> Sampai sini Anda telah berhasil running spark-shell. Silakan bisa di-screenshot dan dibuat laporan praktikum ke repository GitHub Anda dengan nama repo <strong>spark-big-data</strong>.</p>
+</aside>
+<p>Selanjutnya kita akan eksperimen dengan kode bahasa pemrograman Scala, silakan salin dan paste per baris kode berikut.</p>
+<pre><code>import sys.process._
+val res = &#34;ls /tmp&#34; !
+println(res)</code></pre>
+<p>Maka akan tampil seperti berikut ini.</p>
+<p class="image-container"><img style="width: 624.00px" src="img\\572d02bc88601d86.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img\\3f29a32e014e3edb.png"></p>
+<p>Kita juga dapat melakukan dalam mode paste secara multi-line dengan mengetik seperti ini.</p>
+<pre><code>:paste</code></pre>
+<p>Maka akan tampil mode paste, untuk mengakhirinya tekan ctrl+D pada keyboard Anda.</p>
+<p class="image-container"><img style="width: 364.00px" src="img\\1c0a13515348c07e.png"></p>
+<p>Silakan coba dengan kode program di atas, lalu akan tampil seperti berikut.</p>
+<p class="image-container"><img style="width: 432.00px" src="img\\190605be764b7e7d.png"></p>
+<p>Mengapa terjadi error demikian? Jelaskan pada laporan praktikum Anda!</p>
+<aside class="special"><p><strong>TIP:</strong> Untuk Exit atau keluar dari spark-shell, Anda dapat menekan ctrl+Z pada keyboard.</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Memulai PySpark" duration="30">
+        <p>Pada praktikum kali ini, kita akan mencoba spark dengan bahasa pemrograman Python. Silakan running perintah berikut di terminal.</p>
+<pre><code>pyspark</code></pre>
+<p>Maka akan tampil seperti berikut ini.</p>
+<p class="image-container"><img style="width: 624.00px" src="img\\ab428bd32f4b8890.png"></p>
+<p>Selanjutnya Anda dapat menyalin kode berikut baris demi baris.</p>
+<h3 is-upgraded>Kode 1</h3>
+<pre><code>myaccum = sc.accumulator(0)
+myrdd = sc.parallelize(range(1,100))
+myrdd.foreach(lambda value: myaccum.add(value))
+print myaccum.value</code></pre>
+<p>Hasilnya akan seperti berikut ini.</p>
+<p class="image-container"><img style="width: 624.00px" src="img\\f22c94c316b1d703.png"></p>
+<p>Jika kita mengakses Spark UI melalui tautan ini: <a href="http://quickstart.cloudera:4041/jobs/" target="_blank">http://quickstart.cloudera:4041/jobs/</a> </p>
+<p>Maka akan tampil job yang telah diselesaikannya.</p>
+<p class="image-container"><img style="width: 624.00px" src="img\\5aae2ef2ee2a8911.png"></p>
+<aside class="special"><p><strong>TIP:</strong> kode accumulator digunakan untuk proses akumulasi. Anda dapat membacanya lebih lanjut melalui tautan ini <a href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.Accumulator.html" target="_blank">https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.Accumulator.html</a> </p>
+</aside>
+<h2 is-upgraded><strong>Tugas Praktikum 1</strong></h2>
+<p>Silakan praktikkan kode-kode berikut seperti sebelumnya menggunakan pyspark, lalu buatlah laporan praktikum dengan screenshot setiap hasilnya.</p>
+<h3 is-upgraded><strong>Kode 2</strong></h3>
+<pre><code>broadcastVar = sc.broadcast(list(range(1, 100)))
+broadcastVar.value</code></pre>
+<h3 is-upgraded><strong>Kode 3</strong></h3>
+<p>Silakan ganti sesuai letak file txt Anda yang dapat berisi teks apapun untuk diproses.</p>
+<ul>
+<li>&#34;path/folder/anda&#34; → ganti dengan path folder Anda</li>
+<li>&#34;ERROR&#34; → ganti dengan kata yang ingin difilter atau cari</li>
+<li>&#34;product&#34; → ganti dengan kata yang ingin difilter atau cari</li>
+</ul>
+<pre><code># Get the lines from the textfile, create 4 partitions
+access_log = sc.textFile(&#34;path/folder/anda&#34;, 4)
+
+#Filter Lines with ERROR only
+error_log = access_log.filter(lambda x: &#34;ERROR&#34; in x)
+
+# Cache error log in memory
+cached_log = error_log.cache()
+
+# Now perform an action -  count
+print &#34;Total number of error records are %s&#34; % (cached_log.count())
+
+# Now find the number of lines with 
+print &#34;Number of product pages visited that have Errors is %s&#34; % (cached_log.filter(lambda x: &#34;product&#34; in x).count())</code></pre>
+<h3 is-upgraded><strong>Kode 4</strong></h3>
+<pre><code>mylist = [&#34;my&#34;, &#34;pair&#34;, &#34;rdd&#34;]
+myRDD = sc.parallelize(mylist)
+myPairRDD = myRDD.map(lambda s: (s, len(s)))
+myPairRDD.collect()
+myPairRDD.keys().collect()
+myPairRDD.values().collect()</code></pre>
+<h3 is-upgraded><strong>Kode 5</strong></h3>
+<pre><code># Check Default Parallelism
+sc.defaultParallelism
+
+#Let&#39;s create a list, parallelize it and let&#39;s check the number of partitions. 
+myList = [&#34;big&#34;, &#34;data&#34;, &#34;analytics&#34;, &#34;hadoop&#34; , &#34;spark&#34;]
+myRDD = sc.parallelize(myList)
+myRDD.getNumPartitions()
+
+#To override the default parallelism, provide specific number of partitions needed while creating the RDD. In this case let&#39;s create the RDD with 6 partitions.
+myRDDWithMorePartitions = sc.parallelize(myList,6)
+myRDDWithMorePartitions.getNumPartitions()
+ 
+#Let&#39;s issue an action to count the number of elements in the list.
+myRDD.count()
+
+#Display the data in each partition
+myRDD.mapPartitionsWithIndex(lambda index,iterator: ((index, list(iterator)),)).collect()
+
+#Increase number of partitions and display contents
+mySixPartitionsRDD = myRDD.repartition(6)
+mySixPartitionsRDD.mapPartitionsWithIndex(lambda index,iterator: ((index, list(iterator)),)).collect()
+
+#Decrease number of partitions and display contents
+myTwoPartitionsRDD = mySixPartitionsRDD.coalesce(2)
+myTwoPartitionsRDD.mapPartitionsWithIndex(lambda index,iterator: ((index, list(iterator)),)).collect()
+
+# Check Lineage Graph
+print myTwoPartitionsRDD.toDebugString()</code></pre>
+<h3 is-upgraded><strong>Kode 6</strong></h3>
+<p>Silakan ganti sesuai path file Anda pada baris ke-2 berikut. Dapat berupa file txt apapun dengan isi teks artikel atau lainnya.</p>
+<pre><code>from operator import add
+lines = sc.textFile(&#34;/path/to/README.md&#34;)
+counts = lines.flatMap(lambda x: x.split(&#39; &#39;)) \
+              .map(lambda x: (x, 1)) \
+              .reduceByKey(add)
+output = counts.collect()
+for (word, count) in output:
+    print(&#34;%s: %i&#34; % (word, count))</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Tugas Praktikum 2" duration="60">
+        <ol type="1" start="1">
+<li>Silakan selesaikan praktikum tersebut sesuai langkah-langkah sebelumnya, lalu laporkan hasilnya berupa link repository GitHub dengan nama <strong>spark-big-data </strong>disertai dengan screenshot hasilnya.</li>
+<li>Jelaskan masing-masing maksud kode berikut sesuai nomor kode.</li>
+</ol>
+<ol type="1" start="1">
+<li>Kode 1: <code>sc, accumulator, parallelize, lambda, value</code></li>
+<li>Kode 2: <code>broadcast, list, range</code></li>
+<li>Kode 3: <code>textFile, filter, cache, count</code></li>
+<li>Kode 4: <code>map, collect, len, keys, values</code></li>
+<li>Kode 5: <code>defaultParallelism, getNumPartitions, mapPartitionsWithIndex, repartition, coalesce, toDebugString</code></li>
+<li>Kode 6: <code>flatMap, reduceByKey, split</code></li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Selamat!" duration="0">
+        <p>Selamat Anda telah menyelesaikan Codelab ini sebagai pemahaman awal untuk memulai apache spark.</p>
+<p>Pada codelab berikutnya, Anda akan mempelajari tentang Spark SQL, Dataframes, dan Datasets.</p>
+<h2 is-upgraded><strong>Apa selanjutnya?</strong></h2>
+<p>Silakan cek beberapa sumber belajar lainnya...</p>
+<ul>
+<li><a href="https://spark.apache.org/docs/latest/api/python/index.html" target="_blank">https://spark.apache.org/docs/latest/api/python/index.html</a> </li>
+<li><a href="https://www.youtube.com/watch?v=znBa13Earms" target="_blank">https://www.youtube.com/watch?v=znBa13Earms</a> </li>
+</ul>
+<h2 is-upgraded><strong>Referensi</strong></h2>
+<ul>
+<li><a href="https://drive.google.com/file/d/14EKNiLnJhuXw9Y6bqv2mxnCtyfRO6N0p/view?usp=sharing" target="_blank">Venkat Ankam, (2016). Big Data Analytics. Packt Publishing</a>.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
