@@ -23,3 +23,7 @@ Akses codelab di github pages: [https://jti-polinema.github.io/big-data-codelabs
 <hr>
 
 Dibuat dengan [Google Codelab Tools](https://github.com/googlecodelabs/tools)
+
+## Cara ekspor ke Codelabs dengan Claat
+
+    claat export <uuid google docs url>
