@@ -16,8 +16,9 @@ Akses codelab di github pages: [https://jti-polinema.github.io/big-data-codelabs
 
 ## Daftar Isi
 
-[03 - Deep dive into Apache Spark](03-apache-spark/)
+[03 - Deep dive into Apache Spark](https://jti-polinema.github.io/big-data-codelabs/03-apache-spark/)
 
+[04 - UTS (Apache Spark SQL, Dataframes, dan Datasets)](https://jti-polinema.github.io/big-data-codelabs/04-uts/)
 
 <hr>
 
