@@ -1,0 +1,252 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Ujian Tengah Semester Big Data</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="G-H7507PFEJB"
+                  id="04-uts"
+                  title="Ujian Tengah Semester Big Data"
+                  environment="web"
+                  feedback-link="https://github.com/jti-polinema/big-data-codelabs/issues">
+    
+      <google-codelab-step label="Pengantar" duration="0">
+        <p class="image-container"><img style="width: 311.00px" src="img\\909bf8db075bb3db.png"></p>
+<p><strong>Terakhir diperbarui: </strong>10 April 2023</p>
+<p><strong>Penulis: </strong>Habibie Ed Dien</p>
+<h2 is-upgraded>Bekerja dengan CDH</h2>
+<p><em>Cloudera Distribution for Hadoop</em> (CDH) adalah sebuah image open source yang sepaket dengan Hadoop, Spark, dan banyak project lain yang dibutuhkan dalam proses analisis Big Data. Diasumsikan Anda telah berhasil setup CDH di VirtualBox atau VM dan telah berhasil upgrade ke Spark v2.0 atau yang lebih baru.</p>
+<h2 is-upgraded><strong>Apa yang Anda akan pelajari</strong></h2>
+<p>Di codelab ini Anda akan mempelajari tentang:</p>
+<ul>
+<li>Praktik menggunakan Spark SQL</li>
+<li>Praktik menggunakan Dataframes</li>
+<li>Praktik menggunakan Datasets</li>
+<li>Ujian Tengah Semester berupa pembuatan dokumen PPT rencana analisis data</li>
+<li>Praktik melakukan <em>preprocesing </em>data dari hasil data <em>collection </em>ketika Kuis 1 lalu</li>
+</ul>
+<aside class="special"><p><strong>Catatan:</strong> Materi ini diadaptasi dari Buku Big Data Analytics, Packt Publishing (2016) oleh Venkat Ankam serta sumber dokumentasi resmi lainnya.</p>
+</aside>
+<h2 is-upgraded><strong>Apa yang Anda perlu persiapkan</strong></h2>
+<ul>
+<li>PC atau Laptop dengan spesifikasi minimum RAM 8GB Processor Core i3</li>
+<li>Koneksi internet</li>
+<li>CMD, putty, atau terminal</li>
+</ul>
+<h2 is-upgraded><strong>Pengetahuan yang Anda harus dimiliki</strong></h2>
+<ul>
+<li>Diasumsikan Anda telah berhasil setup CDH di VirtualBox, VM, atau docker</li>
+<li>Diasumsikan Anda telah berhasil upgrade ke Spark v2.0 atau yang lebih baru</li>
+<li>Pemrograman dasar Python dan Scala</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Analitik dengan DataFrames" duration="30">
+        <p>Untuk memulai spark, silakan akses ke folder spark di mana Anda pernah ekstrak sebelumnya. Misalnya di bawah ini terletak di <code>/home/cloudera</code>, lalu masuk ke folder <code>sbin</code> dan run <code>start-all.sh</code> untuk menjalankan spark daemons. Jika diminta mengisi password, maka isikan <code>cloudera</code>.</p>
+<pre><code>cd /home/cloudera/spark-2.0.0-bin-hadoop2.7/sbin
+sudo ./start-all.sh</code></pre>
+<p>Kemudian jika berhasil running, Anda dapat mengakses di browser CDH atau VM pada alamat <a href="http://quickstart.cloudera:8080/" target="_blank">http://quickstart.cloudera:8080/</a> </p>
+<aside class="special"><p><strong>Catatan:</strong> Sampai sini Anda telah berhasil running Spark v2.0. Silakan bisa di-screenshot dan dibuat laporan praktikum ke repository GitHub Anda dengan nama repo <strong>spark-sql-big-data</strong>. Agar rapi, silakan buat folder <code>00_images</code> di repo untuk menampung semua file-file screenshot. Kemudian isi laporan praktikum di root folder pada file <code>README.md</code> dengan lengkap dan jelas.</p>
+</aside>
+<h2 is-upgraded><strong>Membuat DataFrames</strong></h2>
+<p>Silakan masuk ke <code>pyspark shell</code> lalu eksekusi kode-kode berikut.</p>
+<aside class="special"><p><strong>Catatan:</strong> Sampel data untuk praktikum dapat diunduh melalui tautan ini: <a href="https://github.com/apache/spark/tree/master/examples/src/main/resources" target="_blank">https://github.com/apache/spark/tree/master/examples/src/main/resources</a> </p>
+</aside>
+<h4 is-upgraded>Kode 1</h4>
+<pre><code>mylist = [(50, &#34;DataFrame&#34;),(60, &#34;pandas&#34;)]
+myschema = [&#39;col1&#39;, &#39;col2&#39;]</code></pre>
+<h3 is-upgraded><strong>Metode 1: Membuat DataFrame dengan objek list, schema dan default data types</strong></h3>
+<h4 is-upgraded>Kode 2</h4>
+<pre><code>df1 = spark.createDataFrame(mylist, myschema)</code></pre>
+<h3 is-upgraded><strong>Metode 2: Membuat DataFrame dengan parallelizing list dan konversi RDD ke DataFrame</strong></h3>
+<h4 is-upgraded>Kode 3</h4>
+<pre><code>df2 = sc.parallelize(mylist).toDF(myschema)</code></pre>
+<h3 is-upgraded><strong>Method 3: Read data from a file, Infer schema and convert to DataFrame</strong></h3>
+<p>Copy file <code>people.txt</code> yang terletak di folder <code>examples/resources</code> ke hdfs. Lakukan perintah berikut di tab terminal lain dengan perintah hadoop seperti berikut.</p>
+<h4 is-upgraded>Kode 4</h4>
+<pre><code>hadoop fs -put /examples/resources/people.txt people.txt </code></pre>
+<p>Kemudian kembali ke tab terminal <code>pyspark shell</code>, jalankan kode python berikut.</p>
+<h4 is-upgraded>Kode 5</h4>
+<pre><code>from pyspark.sql import SQLContext, Row
+peopleRDD = sc.textFile(&#34;people.txt&#34;)
+people_sp = peopleRDD.map(lambda l: l.split(&#34;,&#34;))
+people = people_sp.map(lambda p: Row(name=p[0], age=int(p[1])))
+df_people = spark.createDataFrame(people)
+df_people.createOrReplaceTempView(&#34;people&#34;)
+spark.sql(&#34;SHOW TABLES&#34;).show()
+spark.sql(&#34;SELECT name,age FROM people where age &gt; 19&#34;).show() </code></pre>
+<h3 is-upgraded><strong>Metode 4: Membaca data dari file, lalu assign schema secara programmatically</strong></h3>
+<h4 is-upgraded>Kode 6</h4>
+<pre><code>from pyspark.sql import SQLContext, Row
+peopleRDD = sc.textFile(&#34;people.txt&#34;)
+people_sp = peopleRDD.map(lambda l: l.split(&#34;,&#34;))
+people = people_sp.map(lambda p: Row(name=p[0], age=int(p[1])))
+df_people = people_sp.map(lambda p: (p[0], p[1].strip()))
+schemaStr = &#34;name age&#34;
+fields = [StructField(field_name, StringType(), True) \
+for field_name in schemaStr.split()]
+schema = StructType(fields)
+df_people = spark.createDataFrame(people,schema)
+df_people.show()
+df_people.createOrReplaceTempView(&#34;people&#34;)
+spark.sql(&#34;select * from people&#34;).show() </code></pre>
+<aside class="special"><p><strong>Catatan:</strong> Sampai sini Anda telah berhasil membuat DataFrames dengan empat metode. Silakan bisa di-screenshot dan dibuat laporan praktikum ke repository GitHub Anda dengan nama repo atau folder <strong><code>spark-sql-big-data/01_dataframes</code></strong></p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Membuat DataFrame dari Database Eksternal" duration="20">
+        <p>Untuk membuat DataFrame dari Database eksternal, kita dapat menggunakan perintah atau API sqlContext.read dengan jdbc sebagai format dan memasukkan data koneksi, nama tabel, user, dan password.</p>
+<p>Pertama, silakan copy terlebih dahulu drivernya dari folder <code>/usr/lib/hive/lib/mysql-connector-java.jar</code> ke folder <code>JARs</code> di spark. Hal ini dapat dilakukan bagi yang sudah setup VM Cloudera, namun bagi yang menggunakan OS Ubuntu atau docker, dapat unduh dari <a href="https://jar-download.com/artifacts/mysql/mysql-connector-java" target="_blank">https://jar-download.com/artifacts/mysql/mysql-connector-java</a> atau bisa juga copy dari teman yang menggunakan VM Cloudera.</p>
+<p>Kemudian praktikkan kedua metode berikut ini.</p>
+<h3 is-upgraded><strong>Metode 1</strong></h3>
+<h4 is-upgraded>Kode 7</h4>
+<pre><code>df1 = spark.read.format(&#39;jdbc&#39;).options(url=&#39;jdbc:mysql://ebt-polinema.id:3306/polinema_pln?user=ebt&amp;password=EBT@2022@pltb&#39;, dbtable=&#39;t_wind_turbine&#39;).load()
+df1.show()</code></pre>
+<h3 is-upgraded><strong>Metode 2</strong></h3>
+<h4 is-upgraded>Kode 8</h4>
+<pre><code>df2 = spark.read.format(&#39;jdbc&#39;).options(url=&#39;jdbc:mysql://ebt-polinema.id:3306/polinema_pln&#39;, dbtable=&#39;t_wind_turbine&#39;, user=&#39;ebt&#39;, password=&#39;EBT@2022@pltb&#39;).load()
+df2.show()</code></pre>
+<aside class="special"><p><strong>Catatan:</strong> Sampai sini Anda telah berhasil membuat DataFrame dari database MySQL. Silakan bisa di-screenshot dan dibuat laporan praktikum ke repository GitHub Anda dengan nama repo atau folder <strong><code>spark-sql-big-data/02_dataframe_mysql</code></strong></p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Mengonversi DataFrames ke RDDs" duration="10">
+        <p>Untuk melakukan konversi dari DataFrames ke RDD itu sangat sederhana, Anda hanya menggunakan metode <code>.rdd</code></p>
+<h4 is-upgraded>Kode 9</h4>
+<pre><code># Create DataFrame
+mylist = [(1, &#34;Nama-NIM&#34;),(3, &#34;Big Data 2023&#34;)]
+myschema = [&#39;col1&#39;, &#39;col2&#39;]
+df = spark.createDataFrame(mylist, myschema)
+
+#Convert DF to RDD
+df.rdd.collect()
+
+df2rdd = df.rdd
+df2rdd.take(2)</code></pre>
+<aside class="special"><p><strong>Catatan:</strong> Sampai sini Anda telah berhasil membuat konversi DataFrame ke RDD. Silakan bisa di-screenshot dan dibuat laporan praktikum ke repository GitHub Anda dengan nama repo atau folder <strong><code>spark-sql-big-data/03_convert_df_rdd</code></strong></p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Membuat Datasets" duration="30">
+        <p>Kode-kode berikut digunakan untuk membuat Dataset dan DataFrame dari RDD. Masuk ke scala shell dengan perintah <code>spark-shell</code> di terminal lalu eksekusi kode-kode berikut ini.</p>
+<h4 is-upgraded>Kode 10</h4>
+<pre><code>case class Dept(dept_id: Int, dept_name: String)
+
+val deptRDD = sc.makeRDD(Seq(Dept(1,&#34;Sales&#34;),Dept(2,&#34;HR&#34;)))
+
+val deptDS = spark.createDataset(deptRDD)
+
+val deptDF = spark.createDataFrame(deptRDD)</code></pre>
+<aside class="warning"><p><strong>Perhatian:</strong> Ketika Anda melakukan konversi dari Dataset ke RDD, maka akan diperoleh data berupa <code>RDD[Dept]</code>. Tapi, ketika konversi dari DataFrame ke RDD, makan akan diperoleh <code>RDD[Row]</code>.</p>
+</aside>
+<h4 is-upgraded>Kode 11</h4>
+<pre><code>deptDS.rdd
+
+//res12: org.apache.spark.rdd.RDD[Dept] = MapPartitionsRDD[5] at rdd at 
+//&lt;console&gt;:31
+
+deptDF.rdd
+
+//res13: org.apache.spark.rdd.RDD[org.apache.spark.sql.Row] = //MapPartitionsRDD[8] at rdd at &lt;console&gt;:31
+
+deptDS.filter(x =&gt; x.dept_location &gt; 1).show()</code></pre>
+<aside class="special"><p><strong>Catatan:</strong> Sampai sini Anda telah berhasil membuat Dataset dari RDD. Silakan bisa di-screenshot dan dibuat laporan praktikum ke repository GitHub Anda dengan nama repo atau folder <strong><code>spark-sql-big-data/04_datasets</code></strong></p>
+<p>Pada Kode 11 di baris akhir terjadi error, jelaskan pada laporan praktikum Anda mengapa ini bisa terjadi ?</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Tugas Praktikum" duration="60">
+        <ol type="1" start="1">
+<li>Silakan selesaikan praktikum tersebut sesuai langkah-langkah sebelumnya, lalu laporkan hasilnya berupa link repository GitHub dengan nama <strong>spark-sql-big-data </strong>disertai dengan screenshot hasilnya.</li>
+<li>Jelaskan masing-masing maksud kode berikut sesuai nomor kode.</li>
+</ol>
+<ul>
+<li>Kode 1: <code>mylist, myschema</code></li>
+<li>Kode 2: <code>spark.createDataFrame</code></li>
+<li>Kode 3: <code>parallelize, toDF</code></li>
+<li>Kode 4: <code>hadoop, fs, put</code></li>
+<li>Kode 5: <code>pyspark.sql, SQLContext, createOrReplaceTempView, show</code></li>
+<li>Kode 6: <code>textFile, map, lambda, strip, StructField, StringType</code></li>
+<li>Kode 7: <code>spark.read.format, jdbc, options, load</code></li>
+<li>Kode 8: <code>show</code></li>
+<li>Kode 9: <code>collect, rdd, take</code></li>
+<li>Kode 10: <code>makeRDD, Seq, createDataset</code></li>
+<li>Kode 11: <code>filter</code></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Ujian Tengah Semester" duration="60">
+        <ol type="1" start="1">
+<li>Silakan buat Google Slide sesuai kelompok Kuis 1 sebelumnya yang berisi:</li>
+</ol>
+<ul>
+<li>Identitas kelompok dan judul studi kasus</li>
+<li>Diagram alir (<em>flowchart</em>) untuk melakukan preprocesing data dan ETL (<em>Extract-Transform-Load</em>)</li>
+<li>Rencana akhir visualisasi data yang akan dibuat</li>
+<li>Skenariokan bagaimana proses data yang akan dilakukan dengan SparkSQL, DataFrames atau Datasets dari atribut-atribut dan sumber data yang telah dimiliki sebelumnya</li>
+</ul>
+<ol type="1" start="2">
+<li>Buatlah repository private &#34;<strong>project-big-data-2023</strong>&#34; di GitHub dengan invite anggota kelompok masing-masing dan akun dosen: <strong>hbb-polinema</strong></li>
+<li><strong>Kumpulkan link repo GitHub dan link Google Slide tersebut ke spreadsheet tugas biasanya terakhir tanggal 21 April 2023 Jam 21:00 WIB.</strong></li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Selamat!" duration="0">
+        <p>Selamat Anda telah menyelesaikan Codelab ini sebagai pemahaman awal untuk memulai Apache Spark SQL, DataFrames, dan Datasets.</p>
+<p>Pada codelab berikutnya, Anda akan mempelajari tentang Real-Time Analytics dengan Spark Streaming.</p>
+<h2 is-upgraded><strong>Apa selanjutnya?</strong></h2>
+<p>Silakan cek beberapa sumber belajar lainnya...</p>
+<ul>
+<li><a href="https://spark.apache.org/docs/latest/api/python/index.html" target="_blank">https://spark.apache.org/docs/latest/api/python/index.html</a> </li>
+<li><a href="https://www.youtube.com/watch?v=znBa13Earms" target="_blank">https://www.youtube.com/watch?v=znBa13Earms</a> </li>
+<li><a href="https://spark.apache.org/docs/latest/sql-programming-guide.html#creating-datasets" target="_blank">Spark SQL, DataFrames and Datasets Guide</a></li>
+</ul>
+<h2 is-upgraded><strong>Referensi</strong></h2>
+<ul>
+<li><a href="https://drive.google.com/file/d/14EKNiLnJhuXw9Y6bqv2mxnCtyfRO6N0p/view?usp=sharing" target="_blank">Venkat Ankam, (2016). Big Data Analytics. Packt Publishing</a>.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

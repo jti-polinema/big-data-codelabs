@@ -1,0 +1,26 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2023-04-10T05:44:41Z",
+  "id": "04-uts",
+  "duration": 210,
+  "title": "Ujian Tengah Semester Big Data",
+  "authors": "Habibie Ed Dien 2023",
+  "summary": "Berdasarkan materi dari Chapter 4 - Apache Spark SQL",
+  "source": "1uyedLbz8gLDIO_SuPtfvz4z0r2GCSFK45VYypd1oJq8",
+  "theme": "bigdata",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "bigdata"
+  ],
+  "tags": [
+    "desktop"
+  ],
+  "feedback": "https://github.com/jti-polinema/big-data-codelabs/issues",
+  "ga": "G-H7507PFEJB",
+  "url": "04-uts"
+}
