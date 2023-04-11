@@ -109,7 +109,7 @@ df_people = spark.createDataFrame(people,schema)
 df_people.show()
 df_people.createOrReplaceTempView(&#34;people&#34;)
 spark.sql(&#34;select * from people&#34;).show() </code></pre>
-<aside class="special"><p><strong>Catatan:</strong> Sampai sini Anda telah berhasil membuat DataFrames dengan empat metode. Silakan bisa di-screenshot dan dibuat laporan praktikum ke repository GitHub Anda dengan nama repo atau folder <strong><code>spark-sql-big-data/01_dataframes</code></strong></p>
+<aside class="special"><p><strong>Catatan:</strong> Sampai sini Anda telah berhasil membuat DataFrames dengan empat metode. Silakan bisa di-screenshot dan dibuat laporan praktikum ke repository GitHub Anda dengan nama repo atau folder (lampirkan code tersebut) <strong><code>spark-sql-big-data/01_dataframes</code></strong></p>
 </aside>
 
 
@@ -127,7 +127,7 @@ df1.show()</code></pre>
 <h4 is-upgraded>Kode 8</h4>
 <pre><code>df2 = spark.read.format(&#39;jdbc&#39;).options(url=&#39;jdbc:mysql://ebt-polinema.id:3306/polinema_pln&#39;, dbtable=&#39;t_wind_turbine&#39;, user=&#39;ebt&#39;, password=&#39;EBT@2022@pltb&#39;).load()
 df2.show()</code></pre>
-<aside class="special"><p><strong>Catatan:</strong> Sampai sini Anda telah berhasil membuat DataFrame dari database MySQL. Silakan bisa di-screenshot dan dibuat laporan praktikum ke repository GitHub Anda dengan nama repo atau folder <strong><code>spark-sql-big-data/02_dataframe_mysql</code></strong></p>
+<aside class="special"><p><strong>Catatan:</strong> Sampai sini Anda telah berhasil membuat DataFrame dari database MySQL. Silakan bisa di-screenshot dan dibuat laporan praktikum ke repository GitHub Anda dengan nama repo atau folder (lampirkan code tersebut) <strong><code>spark-sql-big-data/02_dataframe_mysql</code></strong></p>
 </aside>
 
 
@@ -146,13 +146,13 @@ df.rdd.collect()
 
 df2rdd = df.rdd
 df2rdd.take(2)</code></pre>
-<aside class="special"><p><strong>Catatan:</strong> Sampai sini Anda telah berhasil membuat konversi DataFrame ke RDD. Silakan bisa di-screenshot dan dibuat laporan praktikum ke repository GitHub Anda dengan nama repo atau folder <strong><code>spark-sql-big-data/03_convert_df_rdd</code></strong></p>
+<aside class="special"><p><strong>Catatan:</strong> Sampai sini Anda telah berhasil membuat konversi DataFrame ke RDD. Silakan bisa di-screenshot dan dibuat laporan praktikum ke repository GitHub Anda dengan nama repo atau folder (lampirkan code tersebut) <strong><code>spark-sql-big-data/03_convert_df_rdd</code></strong></p>
 </aside>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Membuat Datasets" duration="30">
+      <google-codelab-step label="Membuat Datasets" duration="20">
         <p>Kode-kode berikut digunakan untuk membuat Dataset dan DataFrame dari RDD. Masuk ke scala shell dengan perintah <code>spark-shell</code> di terminal lalu eksekusi kode-kode berikut ini.</p>
 <h4 is-upgraded>Kode 10</h4>
 <pre><code>case class Dept(dept_id: Int, dept_name: String)
@@ -175,8 +175,96 @@ deptDF.rdd
 //res13: org.apache.spark.rdd.RDD[org.apache.spark.sql.Row] = //MapPartitionsRDD[8] at rdd at &lt;console&gt;:31
 
 deptDS.filter(x =&gt; x.dept_location &gt; 1).show()</code></pre>
-<aside class="special"><p><strong>Catatan:</strong> Sampai sini Anda telah berhasil membuat Dataset dari RDD. Silakan bisa di-screenshot dan dibuat laporan praktikum ke repository GitHub Anda dengan nama repo atau folder <strong><code>spark-sql-big-data/04_datasets</code></strong></p>
+<aside class="special"><p><strong>Catatan:</strong> Sampai sini Anda telah berhasil membuat Dataset dari RDD. Silakan bisa di-screenshot dan dibuat laporan praktikum ke repository GitHub Anda dengan nama repo atau folder (lampirkan code tersebut) <strong><code>spark-sql-big-data/04_datasets</code></strong></p>
 <p>Pada Kode 11 di baris akhir terjadi error, jelaskan pada laporan praktikum Anda mengapa ini bisa terjadi ?</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Mengonversi DataFrame ke Datasets dan sebaliknya" duration="10">
+        <p>Sebuah DataFrame dapat dikonversi ke Dataset dengan menambahkan keyword as sebagai metode pada variabel DataFrame. Kode 12 berikut adalah lanjutan dari kode 11, silakan bisa menggunakan variabel sebelumnya.</p>
+<h4 is-upgraded>Kode 12</h4>
+<pre><code>val newDeptDS = deptDF.as[Dept]
+
+newDeptDS.show()
+
+newDeptDS.first()
+
+// mengonversi ke DataFrame kembali
+newDeptDS.toDF.first()</code></pre>
+<aside class="special"><p><strong>Catatan:</strong> Sampai sini Anda telah berhasil membuat konversi DataFrame ke Datasets. Silakan bisa di-screenshot dan dibuat laporan praktikum ke repository GitHub Anda dengan nama repo atau folder (lampirkan code tersebut) <strong><code>spark-sql-big-data/05_convert_df_ds</code></strong></p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Mengakses Metadata menggunakan Catalog" duration="30">
+        <p>Mengakses informasi metadata tentang tabel Hive dan UDF cukup mudah dengan Catalog API. Silakan running kode-kode berikut di spark-shell untuk mengakses metadata.</p>
+<h4 is-upgraded>Kode 13</h4>
+<pre><code>spark.catalog.listDatabases().select(&#34;name&#34;).show()
+
+spark.catalog.listTables.show()
+
+spark.catalog.isCached(&#34;sample_07&#34;)
+
+spark.catalog.listFunctions().show()</code></pre>
+<aside class="warning"><p><strong>Perhatian:</strong> Metode <code>createTempView</code> dan <code>dropTempView</code> digunakan untuk membuat dan menghapus tabel sementara menggunakan API DataFrame atau Dataset.</p>
+</aside>
+<aside class="special"><p><strong>Catatan:</strong> Sampai sini Anda telah berhasil mengakses informasi metadata menggunakan Catalog API ke tabel Hive dan UDF. Silakan bisa di-screenshot dan dibuat laporan praktikum ke repository GitHub Anda dengan nama repo atau folder (lampirkan code tersebut) <strong><code>spark-sql-big-data/06_access_metadata</code></strong></p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Bekerja dengan berkas teks" duration="10">
+        <p>Untuk memuat data dari berkas teks, kita gunakan metode <code>text</code>, yang mana akan mengembalikan satu kolom dengan tipe data string.</p>
+<aside class="warning"><p><strong>Perhatian:</strong> Dataset API tidak mendukung bahasa Python. Sehingga dalam bahasa Python hanya mendukung DataFrame dan di Scala bisa menggunakan Dataset.</p>
+</aside>
+<p>File <code>people.txt</code> bisa diperoleh dari link github ini: <a href="https://github.com/apache/spark/tree/master/examples/src/main/resources" target="_blank">https://github.com/apache/spark/tree/master/examples/src/main/resources</a></p>
+<h4 is-upgraded>Kode 14</h4>
+<pre><code>df_txt = spark.read.text(&#34;people.txt&#34;)
+df_txt.show()
+df_txt</code></pre>
+<aside class="special"><p><strong>Catatan:</strong> Sampai sini Anda telah berhasil mengakses data dari file <code>txt</code>. Silakan bisa di-screenshot dan dibuat laporan praktikum ke repository GitHub Anda dengan nama repo atau folder (lampirkan code tersebut) <strong><code>spark-sql-big-data/07_impor_txt</code></strong></p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Bekerja dengan JSON" duration="15">
+        <p>Spark SQL dapat secara otomatis mengenali schema dari dataset JSON ketika dimuat ke dalam sebuah DataFrame.</p>
+<p>Copy dataset (<code>people.json</code>) ke HDFS dan masuk ke PySpark Shell. Lalu running kode 15 berikut ini.</p>
+<h4 is-upgraded>Kode 15</h4>
+<pre><code>df_json = spark.read.load(&#34;people.json&#34;, format=&#34;json&#34;)
+df_json = spark.read.json(&#34;people.json&#34;)
+df_json.printSchema()
+
+df_json.show()</code></pre>
+<p>Untuk menulis data ke file JSON lain, gunakan kode 16 berikut ini.</p>
+<h4 is-upgraded>Kode 16</h4>
+<pre><code>df_json.write.json(&#34;newjson_dir&#34;)
+df_json.write.format(&#34;json&#34;).save(&#34;newjson_dir2&#34;)</code></pre>
+<p>Untuk menulis data ke format yang lain, cukup panggil format file tersebut sebagai metode untuk disimpan sebagai format file tersebut. Berikut adalah contoh cara menyimpan DataFrame <code>df_json</code> ke format Parquet.</p>
+<h4 is-upgraded>Kode 17</h4>
+<pre><code>df_json.write.parquet(&#34;parquet_dir&#34;)
+df_json.write.format(&#34;parquet&#34;).save(&#34;parquet_dir2&#34;)</code></pre>
+<aside class="special"><p><strong>Catatan:</strong> Sampai sini Anda telah berhasil mengakses data dari file <code>json</code>. Silakan bisa di-screenshot dan dibuat laporan praktikum ke repository GitHub Anda dengan nama repo atau folder (lampirkan code tersebut) <strong><code>spark-sql-big-data/08_impor_json</code></strong></p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Bekerja dengan CSV" duration="15">
+        <p>Unduh dataset .csv lalu copy ke HDFS. Masuk ke pyspark sheel untuk membuat DataFrame dari file .csv tersebut.</p>
+<p class="image-container"><img style="width: 594.00px" src="img\\d9b4f2feb1bc856.png"></p>
+<h4 is-upgraded>Kode 18</h4>
+<pre><code>csv_df = spark.read.options(header=&#39;true&#39;,inferSchema=&#39;true&#39;).csv(&#34;cars.csv&#34;)
+
+csv_df.printSchema()
+
+csv_df.select(&#39;year&#39;, &#39;model&#39;).write.options(codec=&#34;org.apache.hadoop.io.compress.GzipCodec&#34;).csv(&#39;newcars.csv&#39;)</code></pre>
+<aside class="special"><p><strong>Catatan:</strong> Sampai sini Anda telah berhasil mengakses data dari file <code>csv</code>. Silakan bisa di-screenshot dan dibuat laporan praktikum ke repository GitHub Anda dengan nama repo atau folder (lampirkan code tersebut) <strong><code>spark-sql-big-data/09_impor_csv</code></strong></p>
 </aside>
 
 
@@ -185,21 +273,67 @@ deptDS.filter(x =&gt; x.dept_location &gt; 1).show()</code></pre>
       <google-codelab-step label="Tugas Praktikum" duration="60">
         <ol type="1" start="1">
 <li>Silakan selesaikan praktikum tersebut sesuai langkah-langkah sebelumnya, lalu laporkan hasilnya berupa link repository GitHub dengan nama <strong>spark-sql-big-data </strong>disertai dengan screenshot hasilnya.</li>
-<li>Jelaskan masing-masing maksud kode berikut sesuai nomor kode.</li>
+<li>Jelaskan masing-masing maksud kode berikut sesuai nomor kodenya pada laporan praktikum Anda!</li>
 </ol>
-<ul>
-<li>Kode 1: <code>mylist, myschema</code></li>
-<li>Kode 2: <code>spark.createDataFrame</code></li>
-<li>Kode 3: <code>parallelize, toDF</code></li>
-<li>Kode 4: <code>hadoop, fs, put</code></li>
-<li>Kode 5: <code>pyspark.sql, SQLContext, createOrReplaceTempView, show</code></li>
-<li>Kode 6: <code>textFile, map, lambda, strip, StructField, StringType</code></li>
-<li>Kode 7: <code>spark.read.format, jdbc, options, load</code></li>
-<li>Kode 8: <code>show</code></li>
-<li>Kode 9: <code>collect, rdd, take</code></li>
-<li>Kode 10: <code>makeRDD, Seq, createDataset</code></li>
-<li>Kode 11: <code>filter</code></li>
-</ul>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Nomor Kode</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Sintaks</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>1</p>
+</td><td colspan="1" rowspan="1"><p><code>mylist, myschema</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>2</p>
+</td><td colspan="1" rowspan="1"><p><code>spark.createDataFrame</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>3</p>
+</td><td colspan="1" rowspan="1"><p><code>parallelize, toDF</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>4</p>
+</td><td colspan="1" rowspan="1"><p><code>hadoop, fs, put</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>5</p>
+</td><td colspan="1" rowspan="1"><p><code>pyspark.sql, SQLContext, createOrReplaceTempView, show</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>6</p>
+</td><td colspan="1" rowspan="1"><p><code>textFile, map, lambda, strip, StructField, StringType</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>7</p>
+</td><td colspan="1" rowspan="1"><p><code>spark.read.format, jdbc, options, load</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>8</p>
+</td><td colspan="1" rowspan="1"><p><code>show</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>9</p>
+</td><td colspan="1" rowspan="1"><p><code>collect, rdd, take</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>10</p>
+</td><td colspan="1" rowspan="1"><p><code>makeRDD, Seq, createDataset</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>11</p>
+</td><td colspan="1" rowspan="1"><p><code>filter</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>12</p>
+</td><td colspan="1" rowspan="1"><p><code>as, toDF, first</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>13</p>
+</td><td colspan="1" rowspan="1"><p><code>listDatabases, listTables, listFunctions, isCached, select</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>14</p>
+</td><td colspan="1" rowspan="1"><p><code>Read, text</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>15</p>
+</td><td colspan="1" rowspan="1"><p><code>load, json, format, printSchema</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>16</p>
+</td><td colspan="1" rowspan="1"><p><code>write, save</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>17</p>
+</td><td colspan="1" rowspan="1"><p><code>parquet</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>18</p>
+</td><td colspan="1" rowspan="1"><p><code>Options, inferSchema, csv, header, codec</code></p>
+</td></tr>
+</table>
 
 
       </google-codelab-step>
