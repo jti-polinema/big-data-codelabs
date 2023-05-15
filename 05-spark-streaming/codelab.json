@@ -1,0 +1,26 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2023-05-15T06:53:58Z",
+  "id": "05-spark-streaming",
+  "duration": 120,
+  "title": "Big Data - Spark Streaming",
+  "authors": "Habibie Ed Dien 2023",
+  "summary": "Berdasarkan materi dari Chapter 5 - Apache Spark Streaming",
+  "source": "12dCl__7Sv1cFH4YaM-UbqxFRBZzfTEETzb50edWX1U8",
+  "theme": "bigdata",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "bigdata"
+  ],
+  "tags": [
+    "cloud"
+  ],
+  "feedback": "https://github.com/jti-polinema/big-data-codelabs/issues",
+  "ga": "G-H7507PFEJB",
+  "url": "05-spark-streaming"
+}
